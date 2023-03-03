@@ -2,6 +2,7 @@ const express = require("express");
 const fetch = require("node-fetch");
 const cors = require('cors');
 const app = express();
+
 app.use(cors()); 
 
 const extractDecimals = (number) =>{
@@ -133,7 +134,8 @@ app.get("/api/items/:id", async (request, response) => {
   response.status(200).json(formatData);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001
+
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 })
