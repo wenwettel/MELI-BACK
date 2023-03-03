@@ -1,6 +1,8 @@
 const express = require("express");
 const fetch = require("node-fetch");
+const cors = require('cors');
 const app = express();
+app.use(cors()); 
 
 const extractDecimals = (number) =>{
     let priceToString = number?.toString()
@@ -19,6 +21,12 @@ const getCategoriesRoot = async (id) =>{
       );  
     return categoriesRoot
 }
+
+//Inicio
+app.get("/",  (request, response) => {
+  response.send('<h1>Hola</h1>')
+})
+
 
 //ENDPOINT :Search Items 
 app.get("/api/items", async (request, response) => {
