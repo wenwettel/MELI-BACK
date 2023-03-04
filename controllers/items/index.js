@@ -1,5 +1,5 @@
 const {fetchItems,fetchItemById,fetchItemDescriptionById} = require('../../services/items')
-const {extractDecimals, fetchItemsCategories, getCategoriesRoot} = require('./utils')
+const {extractDecimals, getItemsCategories, getCategoriesRoot} = require('./utils')
 
 
 const getAllItems = async (request, response) => {
@@ -9,7 +9,7 @@ const getAllItems = async (request, response) => {
     const items = await fetchItems(query)
   
     //breadcrumbs
-    const categoriesRoot = await fetchItemsCategories(items);
+    const categoriesRoot = await getItemsCategories(items);
     
   
     //results format
@@ -48,8 +48,8 @@ const getAllItems = async (request, response) => {
 
 const getItem = async (request, response) => {
         const idParam = request.params.id;
-        let item = await fetchItemById(idParam)
-        let {
+        const item = await fetchItemById(idParam)
+        const {
           id,
           title,
           currency_id,
@@ -67,7 +67,7 @@ const getItem = async (request, response) => {
       
         //consulta del detalle
         const description = await fetchItemDescriptionById(idParam)
-        let { text, plain_text } = description;
+        const { text, plain_text } = description;
       
         /*Formato del response */
         const formatData = {

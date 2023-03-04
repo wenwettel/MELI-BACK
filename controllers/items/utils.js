@@ -21,8 +21,8 @@ const getCategoriesRoot = async (id) => {
 /*verifica si la busqueda de los items ya viene con el filtro categoria aplicado;
   ya que si esta aplicado no aparece en los "available_filters"*/
 
-const fetchItemsCategories = async (items) => {
-  console.log(items, "items");
+const getItemsCategories = async (items) => {
+  
   const availableFilters = items.available_filters.find(
     (filter) => filter.id === "category"
   );
@@ -46,5 +46,5 @@ const fetchItemsCategories = async (items) => {
 module.exports = {
   extractDecimals,
   getCategoriesRoot,
-  fetchItemsCategories,
+  getItemsCategories,
 };
