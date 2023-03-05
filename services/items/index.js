@@ -1,15 +1,15 @@
-const fetch = require("node-fetch");
+const axios = require("axios")
 
 const fetchItems = async (query) => {
-    return await fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${query}`).then(res => res.json());
+    return await axios(`https://api.mercadolibre.com/sites/MLA/search?q=${query}`);
 }
 
 const fetchItemById = async (id) => {
-    return await fetch(`https://api.mercadolibre.com/items/${id}`).then(res => res.json());
+    return await axios(`https://api.mercadolibre.com/items/${id}`);
 }
 
 const fetchItemDescriptionById = async (id) => {
-    return await fetch(`https://api.mercadolibre.com/items/${id}/description`).then(res => res.json());
+    return await axios(`https://api.mercadolibre.com/items/${id}/description`);
 }
 
 

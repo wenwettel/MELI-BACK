@@ -1,4 +1,5 @@
 const {fetchCategoryById} = require("../../services/categories");
+const {fetchItemDescriptionById} = require("../../services/items")
 
 const extractDecimals = (number) => {
   let priceToString = number?.toString();
@@ -11,19 +12,24 @@ const extractDecimals = (number) => {
 
 const getCategoriesRoot = async (id) => {
 
-  const category = await fetchCategoryById(id);
-  const categoriesRoot = category.path_from_root?.map(
-    (cateRoot) => cateRoot.name
-  );
-  return categoriesRoot;
+  try{
+    const category = await fetchCategoryById(id);
+    const categoriesRoot = category?.data?.path_from_root?.map(
+      (cateRoot) => cateRoot.name
+    );
+    return categoriesRoot;
+  }catch(err){
+    console.error(err)
+    return []
+  }
 };
 
 /*verifica si la busqueda de los items ya viene con el filtro categoria aplicado;
   ya que si esta aplicado no aparece en los "available_filters"*/
 
 const getItemsCategories = async (items) => {
-  
-  const availableFilters = items.available_filters.find(
+  if(!items) return []
+  const availableFilters = items.available_filters?.find(
     (filter) => filter.id === "category"
   );
   if (availableFilters) {
@@ -43,8 +49,21 @@ const getItemsCategories = async (items) => {
   );
 };
 
+const getItemDescriptionById = async (id) => {
+  try{
+    return await fetchItemDescriptionById(id)
+  }catch(err){
+    console.error(err)
+    return{
+      text:"",
+      plain_text:""
+    }
+  }
+}
+
 module.exports = {
   extractDecimals,
   getCategoriesRoot,
   getItemsCategories,
+  getItemDescriptionById
 };

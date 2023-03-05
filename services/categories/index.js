@@ -1,6 +1,7 @@
-const fetch = require("node-fetch");
+const axios = require("axios")
+
 const fetchCategoryById = async (id) => {
-    return await fetch(`https://api.mercadolibre.com/categories/${id}`).then(res => res.json());
+    return await axios(`https://api.mercadolibre.com/categories/${id}`);
 }
 
 module.exports = {
