@@ -77,7 +77,7 @@ const getItem = async (request, response) => {
     //consulta del detalle
     const description = await getItemDescriptionById(idParam);
 
-    const { text, plain_text } = description?.data;
+    const { text, plain_text } = description;
 
     const objectResponseItem = {
       id,

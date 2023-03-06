@@ -50,7 +50,7 @@ const getItemsCategories = async (items) => {
 
 const getItemDescriptionById = async (id) => {
   try {
-    return await fetchItemDescriptionById(id);
+    return (await fetchItemDescriptionById(id))?.data;
   } catch (err) {
     console.error(err);
     return {
