@@ -8,56 +8,56 @@ const {
 
 const getAllItems = async (request, response) => {
   const query = request.query?.q;
-  try{
+  try {
     //search general
-  const items = await fetchItems(query);
- 
-  //breadcrumbs
-  const categoriesRoot = await getItemsCategories(items?.data);
+    const items = await fetchItems(query);
 
-  //results format
-  const itemsFormat = items?.data?.results?.slice(0, 4).reduce((acum, currentItem) => {
-    const decimalPrice = extractDecimals(currentItem.price);
+    //breadcrumbs
+    const categoriesRoot = await getItemsCategories(items?.data);
 
-    const newFormat = {
-      id: currentItem.id,
-      title: currentItem.title,
-      price: {
-        currency: currentItem.currency_id,
-        amount: Math.trunc(currentItem.price),
-        decimals: decimalPrice ? decimalPrice : null,
+    //results format
+    const itemsFormat = items?.data?.results
+      ?.slice(0, 4)
+      .reduce((acum, currentItem) => {
+        const decimalPrice = extractDecimals(currentItem.price);
+
+        const newFormat = {
+          id: currentItem.id,
+          title: currentItem.title,
+          price: {
+            currency: currentItem.currency_id,
+            amount: Math.trunc(currentItem.price),
+            decimals: decimalPrice ? decimalPrice : null,
+          },
+          picture: currentItem?.thumbnail,
+          condition: currentItem?.condition,
+          free_shipping: currentItem?.shipping.free_shipping,
+          state_name: currentItem.address?.state_name,
+        };
+        return [...acum, newFormat];
+      }, []);
+
+    //Formato del response
+    const formatData = {
+      author: {
+        name: "Wendy",
+        lastName: "Wettel",
       },
-      picture: currentItem?.thumbnail,
-      condition: currentItem?.condition,
-      free_shipping: currentItem?.shipping.free_shipping,
-      state_name: currentItem.address?.state_name,
+      categories: categoriesRoot,
+      items: itemsFormat || [],
     };
-    return [...acum, newFormat];
-  }, []);
-
-  //Formato del response
-  const formatData = {
-    author: {
-      name: "Wendy",
-      lastName: "Wettel",
-    },
-    categories: categoriesRoot,
-    items: itemsFormat || [],
-  };
-  response.status(200).json(formatData);
-
-  }catch(error){
-    console.error(error)
+    response.status(200).json(formatData);
+  } catch (error) {
+    console.error(error);
     response.status(404).send("resource not found");
   }
-  
 };
 
 const getItem = async (request, response) => {
   try {
     const idParam = request.params.id;
     const item = await fetchItemById(idParam);
- 
+
     const {
       id,
       title,
@@ -76,7 +76,7 @@ const getItem = async (request, response) => {
 
     //consulta del detalle
     const description = await getItemDescriptionById(idParam);
-    
+
     const { text, plain_text } = description?.data;
 
     const objectResponseItem = {
